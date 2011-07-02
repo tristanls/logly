@@ -1,2 +1,20 @@
-{ "name" : "logly",
-  "main" : "./logly.js" }
+{ "name" : "logly"
+, "description" : "A minimal logging utility to support verbose and debug modes"
+, "version" : "1.0.1"
+, "author" :
+  [ { "name" : "Tristan Slominski",
+      "email" : "tristan.slominski@gmail.com",
+      "web" : "http://github.com/tristanls" } ]
+, "bugs" :
+  { "web" : "http://github.com/tristanls/logly/issues" }
+, "licenses" :
+  [ { "type" : "MIT",
+      "url" : "https://github.com/tristanls/logly/blob/master/LICENSE" } ]
+, "repositories" :
+  [ { "type" : "git",
+      "url" : "http://github.com/tristanls/logly.git" } ]
+, "dependencies" : []
+, "homepage" : "https://github.com/tristanls/logly"
+, "main" : "./logly.js"
+, "engines" : { "node" : ">=v0.4.8" }
+}
