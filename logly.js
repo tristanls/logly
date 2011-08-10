@@ -33,6 +33,22 @@ var error = function( input ) {
   logger( input, 'error' );
 };
 
+var stderr = function( input ) {
+  if ( typeof( input ) === "string" ) {
+    process.stderr.write( input );
+  } else if ( typeof( input ) === "function" ) {
+    input();
+  }
+};
+
+var stdout = function( input ) {
+  if ( typeof( input ) === "string" ) {
+    process.stdout.write( input );
+  } else if ( typeof( input ) === "function" ) {
+    input(); 
+  }
+};
+
 var verbose = function( input ) {
   if ( 'verbose' == mode || 'debug' == mode ) {
     logger( input, 'verbose' );
@@ -58,5 +74,7 @@ exports.name = function( applicationName ) {
 exports.debug = debug;
 exports.error = error;
 exports.log = log;
+exports.stdout = stdout;
+exports.stderr = stderr;
 exports.verbose = verbose;
 exports.warn = warn;
