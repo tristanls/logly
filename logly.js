@@ -3,17 +3,22 @@ var fs = require( 'fs' );
 exports.version =
   JSON.parse( fs.readFileSync( __dirname + '/package.json' ) ).version;
 
-var name = 'logly';
-var mode = 'standard';
+var name = {};
+var mode = {};
+
+// because logly is a singleton, we save global settings as a hash
+//  using process.pid as keys
+name[ process.pid ] = 'logly';
+mode[ process.pid ] = 'standard';
 
 var logger = function( input, methodMode ) {
   if ( typeof( input ) === "string" ) {
     if ( methodMode == 'error' || methodMode == 'warn' ) {
-      console.error( name + '[' + methodMode + ']: ' + input );
+      console.error( name[ process.pid ] + '[' + methodMode + ']: ' + input );
     } else if ( methodMode != 'standard' ) {
-      console.log( name + '[' + methodMode + ']: ' + input );
+      console.log( name[ process.pid ] + '[' + methodMode + ']: ' + input );
     } else {
-      console.log( name + ': ' + input );
+      console.log( name[ process.pid ] + ': ' + input );
     }
   } else if ( typeof( input ) === "function" ) {
     input();
@@ -21,13 +26,14 @@ var logger = function( input, methodMode ) {
 };
 
 var debug = function( input ) {
-  if ( 'debug' == mode ) {
+  if ( 'debug' == mode[ process.pid ] ) {
     logger( input, 'debug' );
   }
 };
 
 var log = function( input ) {
-  if ( 'standard' == mode || 'verbose' == mode || 'debug' == mode ) {
+  if ( 'standard' == mode[ process.pid ] || 'verbose' == mode[ process.pid ] 
+      || 'debug' == mode[ process.pid ] ) {
     logger( input, 'standard' );
   }
 };
@@ -53,7 +59,7 @@ var stdout = function( input ) {
 };
 
 var verbose = function( input ) {
-  if ( 'verbose' == mode || 'debug' == mode ) {
+  if ( 'verbose' == mode[ process.pid ] || 'debug' == mode[ process.pid ] ) {
     logger( input, 'verbose' );
   }
 };
@@ -64,14 +70,14 @@ var warn = function( input ) {
 
 exports.mode = function( loglyMode ) {
   if ( 'standard' === loglyMode || 'verbose' === loglyMode || 'debug' === loglyMode ) {
-    mode = loglyMode;
+    mode[ process.pid ] = loglyMode;
   } else {
     throw "Invalid logly mode ( should be one of: standard, verbose, debug )";
   }
 };
 
 exports.name = function( applicationName ) {
-  name = applicationName;
+  name[ process.pid ] = applicationName;
 };
 
 exports.debug = debug;
