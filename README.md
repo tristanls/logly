@@ -26,6 +26,14 @@ Usage
 
     logly.error( 'error log' );
     // stderr: myapp[error]: error log
+    
+    logly.stdout( 'stdout log' );
+    // stdout: stdout log
+    // *above does not include 'myapp'
+    
+    logly.stderr( 'stderr log' );
+    // stderr: stderr log
+    // *above does not include 'myapp'
 
 `logly` also accepts functions as input; this is primarily to conditionally produce a debug output of complex something if in `debug` mode, for example:
 
