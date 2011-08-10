@@ -1,4 +1,7 @@
-exports.version = "1.0.0";
+var fs = require( 'fs' );
+
+exports.version =
+  JSON.parse( fs.readFileSync( __dirname + '/package.json' ) ).version;
 
 var name = 'logly';
 var mode = 'standard';

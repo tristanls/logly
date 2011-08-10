@@ -1,6 +1,6 @@
 { "name" : "logly"
 , "description" : "A minimal logging utility to support verbose and debug modes"
-, "version" : "1.0.1"
+, "version" : "1.1.0"
 , "author" :
   [ { "name" : "Tristan Slominski",
       "email" : "tristan.slominski@gmail.com",
