@@ -3,7 +3,6 @@ logly
 
 `logly` is a small logging framework in the `nodejs` ecosystem that also allows one to set `debug` or `verbose` logging modes. 
 It is useful to replace comments that describe what the code is doing, especially in `debug` mode.
-
 Usage
 ----
 
@@ -34,6 +33,10 @@ Usage
     logly.stderr( 'stderr log' );
     // stderr: stderr log
     // *above does not include 'myapp'
+    
+If you want color then you can enable it (by default color is disabled):
+
+    logly.color(true);
 
 `logly` also accepts functions as input; this is primarily to conditionally produce a debug output of complex something if in `debug` mode, for example:
 
@@ -46,3 +49,4 @@ Usage
     });
     // stdout: myapp[debug]: [OPTION] debug: true
     // stdout: myapp[debug]: [OPTION] output: some.file
+
