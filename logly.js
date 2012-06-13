@@ -5,6 +5,9 @@ exports.version =
 
 var name = {};
 var mode = {};
+var colourText = false; //true if the output should be coloured
+var colours = {}; //set up below colour functions
+
 
 // because logly is a singleton, we save global settings as a hash
 //  using process.pid as keys
@@ -13,17 +16,29 @@ mode[ process.pid ] = 'standard';
 
 var logger = function( input, methodMode ) {
   if ( typeof( input ) === "string" ) {
-    if ( methodMode == 'error' || methodMode == 'warn' ) {
-      console.error( name[ process.pid ] + '[' + methodMode + ']: ' + input );
-    } else if ( methodMode != 'standard' ) {
-      console.log( name[ process.pid ] + '[' + methodMode + ']: ' + input );
-    } else {
-      console.log( name[ process.pid ] + ': ' + input );
+    //colour output
+    var colour = noColour;
+    if(colourText) colour = ( colours[methodMode] );
+    if(typeof colour === 'undefined') colour = noColour;
+      
+    switch(methodMode) {    
+      case 'error':
+      case 'warn':
+        console.error( colour( name[ process.pid ] + '[' + methodMode + ']: ' + input ) );
+        break;
+      case 'debug':
+      case 'verbose':
+        console.log( colour( name[ process.pid ] + '[' + methodMode + ']: ' + input ) );
+        break;
+      default:
+        console.log( colour( name[ process.pid ] + ': ' + input ) );
+        break;
     }
   } else if ( typeof( input ) === "function" ) {
     input();
   }
 };
+
 
 var debug = function( input ) {
   if ( 'debug' == mode[ process.pid ] ) {
@@ -68,6 +83,45 @@ var warn = function( input ) {
   logger( input, 'warn' );
 };
 
+
+
+//------------------------
+// Colour Section
+var ENDL = '\x1B[0m';
+
+var blue = function( text ) {
+  return '\x1B[0;34m' + text + ENDL;
+};
+
+var cyan = function( text ) {
+  return '\x1B[0;36m' + text + ENDL;
+};
+
+var green = function( text ) {
+  return '\x1B[0;32m' + text + ENDL;
+};
+
+var red = function( text ) {
+  return '\x1B[0;31m' + text + ENDL;
+};
+
+var yellow = function( text ) {
+  return '\x1B[0;33m' + text + ENDL;
+};
+
+var noColour = function( text ) {
+  return text;
+}
+
+//config for colouring output
+colours['error'] = red;
+colours['warn'] = yellow;
+colours['debug'] = cyan;
+colours['verbose'] = green;
+colours['standard'] = noColour;
+
+
+
 exports.mode = function( loglyMode ) {
   if ( 'standard' === loglyMode || 'verbose' === loglyMode || 'debug' === loglyMode ) {
     mode[ process.pid ] = loglyMode;
@@ -79,6 +133,13 @@ exports.mode = function( loglyMode ) {
 exports.name = function( applicationName ) {
   name[ process.pid ] = applicationName;
 };
+
+exports.colour = function( bColour ) {
+  colourText = bColour === true;
+};
+
+//I even included this spelling because I'm nice
+exports.color = exports.colour;
 
 exports.debug = debug;
 exports.error = error;
