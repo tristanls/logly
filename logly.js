@@ -5,7 +5,10 @@ exports.version =
 
 var name = {};
 var mode = {};
-var colourText = false; //true if the output should be coloured
+var options = {
+  'colourText': false, // true if the output should be coloured
+  'datePrefix': false  // true if log messages should be prefixed with date
+};
 var colours = {}; //set up below colour functions
 
 
@@ -18,20 +21,23 @@ var logger = function( input, methodMode ) {
   if ( typeof( input ) === "string" ) {
     //colour output
     var colour = noColour;
-    if(colourText) colour = ( colours[methodMode] );
+    if(options.colourText) colour = ( colours[methodMode] );
     if(typeof colour === 'undefined') colour = noColour;
+
+    // add date as message prefix
+    var datePrefix = (options.datePrefix) ? (new Date()).toString() + ' ' : '';
       
     switch(methodMode) {    
       case 'error':
       case 'warn':
-        console.error( colour( name[ process.pid ] + '[' + methodMode + ']: ' + input ) );
+        console.error( datePrefix + colour( name[ process.pid ] + '[' + methodMode + ']: ' + input ) );
         break;
       case 'debug':
       case 'verbose':
-        console.log( colour( name[ process.pid ] + '[' + methodMode + ']: ' + input ) );
+        console.log( datePrefix + colour( name[ process.pid ] + '[' + methodMode + ']: ' + input ) );
         break;
       default:
-        console.log( colour( name[ process.pid ] + ': ' + input ) );
+        console.log( datePrefix + colour( name[ process.pid ] + ': ' + input ) );
         break;
     }
   } else if ( typeof( input ) === "function" ) {
@@ -134,11 +140,15 @@ exports.name = function( applicationName ) {
   name[ process.pid ] = applicationName;
 };
 
-exports.colour = function( bColour ) {
-  colourText = bColour === true;
+exports.options = function( opts ) {
+  options.colourText = (('color' in opts) ? (opts.color === true) : (('colour' in opts) ? (opts.colour === true) : options.colourText));
+  options.datePrefix = (('date' in opts) ? (opts.date == true) : options.datePrefix);
 };
 
-//I even included this spelling because I'm nice
+// this is for compatibility with initial way to set output coloring
+exports.colour = function( bColour ) {
+  options.colourText = bColour === true;
+};
 exports.color = exports.colour;
 
 exports.debug = debug;
