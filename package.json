@@ -1,17 +1,29 @@
-{ "name" : "logly"
-, "description" : "A minimal logging utility to support verbose and debug modes"
-, "version" : "1.2.0"
-, "author" : "Tristan Slominski <tristan.slominski@gmail.com> (http://github.com/tristanls)"
-, "bugs" :
-  { "web" : "http://github.com/tristanls/logly/issues" }
-, "licenses" :
-  [ { "type" : "MIT",
-      "url" : "https://github.com/tristanls/logly/blob/master/LICENSE" } ]
-, "repositories" :
-  [ { "type" : "git",
-      "url" : "http://github.com/tristanls/logly.git" } ]
-, "dependencies" : []
-, "homepage" : "https://github.com/tristanls/logly"
-, "main" : "./logly.js"
-, "engines" : { "node" : ">=v0.4.8" }
+{ 
+  "name" : "logly",
+  "description" : "A minimal logging utility to support verbose and debug modes",
+  "version" : "1.3.0",
+  "author" : "Tristan Slominski <tristan.slominski@gmail.com> (http://github.com/tristanls)",
+  "contributors" : [
+    "Andrew Smith (http://github.com/andrew-smith)",
+    "Bruno Morency <bruno@morency.me> (http://github.com/brunomorency)"
+  ],
+  "bugs" : { 
+    "web" : "http://github.com/tristanls/logly/issues" 
+  },
+  "licenses" : [ 
+    { 
+      "type" : "MIT",
+      "url" : "https://github.com/tristanls/logly/blob/master/LICENSE" 
+    }
+  ],
+  "repositories" : [ 
+    { 
+      "type" : "git",
+      "url" : "http://github.com/tristanls/logly.git" 
+    } 
+  ],
+  "dependencies" : [],
+  "homepage" : "https://github.com/tristanls/logly",
+  "main" : "./logly.js",
+  "engines" : { "node" : ">=v0.4.8" }
 }
