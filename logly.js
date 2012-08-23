@@ -11,7 +11,6 @@ var options = {
 };
 var colours = {}; //set up below colour functions
 
-
 // because logly is a singleton, we save global settings as a hash
 //  using process.pid as keys
 name[ process.pid ] = 'logly';
@@ -25,8 +24,20 @@ var logger = function( input, methodMode ) {
     if(typeof colour === 'undefined') colour = noColour;
 
     // add date as message prefix
-    var datePrefix = (options.datePrefix) ? (new Date()).toString() + ' ' : '';
-      
+    var datePrefix = '';
+
+    if ( options.datePrefix === true ) {
+      datePrefix = ( new Date() ).toString() + ' ';
+    } else if ( typeof( options.datePrefix ) === 'string' ) {
+
+      var comparison = options.datePrefix.toLowerCase();
+
+      if ( comparison === 'iso' || comparison === 'iso8601' ) {
+        datePrefix = ( new Date() ).toISOString() + ' ';
+      }
+
+    } // else if
+
     switch(methodMode) {    
       case 'error':
       case 'warn':
@@ -43,7 +54,7 @@ var logger = function( input, methodMode ) {
   } else if ( typeof( input ) === "function" ) {
     input();
   }
-};
+}; // logger
 
 
 var debug = function( input ) {
@@ -126,8 +137,6 @@ colours['debug'] = cyan;
 colours['verbose'] = green;
 colours['standard'] = noColour;
 
-
-
 exports.mode = function( loglyMode ) {
   if ( 'standard' === loglyMode || 'verbose' === loglyMode || 'debug' === loglyMode ) {
     mode[ process.pid ] = loglyMode;
@@ -142,7 +151,7 @@ exports.name = function( applicationName ) {
 
 exports.options = function( opts ) {
   options.colourText = (('color' in opts) ? (opts.color === true) : (('colour' in opts) ? (opts.colour === true) : options.colourText));
-  options.datePrefix = (('date' in opts) ? (opts.date == true) : options.datePrefix);
+  options.datePrefix = (('date' in opts) ? opts.date : options.datePrefix);
 };
 
 // this is for compatibility with initial way to set output coloring
