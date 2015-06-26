@@ -1,14 +1,14 @@
 logly
 ====
 
-`logly` is a small logging framework in the `nodejs` ecosystem that also allows one to set `debug` or `verbose` logging modes. 
+`logly` is a small logging framework in the `nodejs` ecosystem that also allows one to set `debug` or `verbose` logging modes.
 It is useful to replace comments that describe what the code is doing, especially in `debug` mode.
 
 ## Usage
 
 ```javascript
 var logly = require( 'logly' );
-    
+
 logly.name( 'myapp' );
 logly.mode( 'debug' );
 
@@ -87,10 +87,28 @@ logly.log( 'with iso date' );
 // stdout: 2012-08-23T02:26:14.841Z myapp: with iso date
 ```
 
+### processors
+
+You can do string processing:
+
+```javascript
+var processors = [];
+processors.push( function( input ) {
+    return input.replace(/\n/g, ' '); // replace newlines with spaces
+});
+logly.options( { processors: processors } );
+logly.log( 'some\nnewlines\nhere\nand\nthere');
+//
+```
+
 ### `options` object
 
 You can pass in the above options all together:
 
 ```javascript
-logly.options( { colour : true, date : 'iso' } );
+var processors = [];
+processors.push( function( input ) {
+    return input.replace(/\n/g, ' ');
+});
+logly.options( { colour : true, date : 'iso' , processors: processors } );
 ```

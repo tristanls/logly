@@ -11,6 +11,8 @@ var options = {
 };
 var colours = {}; //set up below colour functions
 
+var processors = undefined;
+
 // because logly is a singleton, we save global settings as a hash
 //  using process.pid as keys
 name[ process.pid ] = 'logly';
@@ -38,7 +40,13 @@ var logger = function( input, methodMode ) {
 
     } // else if
 
-    switch(methodMode) {    
+    if ( processors && Array.isArray( processors ) ) {
+        processors.forEach( function (processor) {
+            input = processor(input);
+        });
+    }
+
+    switch(methodMode) {
       case 'error':
       case 'warn':
         console.error( datePrefix + colour( name[ process.pid ] + '[' + methodMode + ']: ' + input ) );
@@ -64,7 +72,7 @@ var debug = function( input ) {
 };
 
 var log = function( input ) {
-  if ( 'standard' == mode[ process.pid ] || 'verbose' == mode[ process.pid ] 
+  if ( 'standard' == mode[ process.pid ] || 'verbose' == mode[ process.pid ]
       || 'debug' == mode[ process.pid ] ) {
     logger( input, 'standard' );
   }
@@ -86,7 +94,7 @@ var stdout = function( input ) {
   if ( typeof( input ) === "string" ) {
     process.stdout.write( input );
   } else if ( typeof( input ) === "function" ) {
-    input(); 
+    input();
   }
 };
 
@@ -152,6 +160,7 @@ exports.name = function( applicationName ) {
 exports.options = function( opts ) {
   options.colourText = (('color' in opts) ? (opts.color === true) : (('colour' in opts) ? (opts.colour === true) : options.colourText));
   options.datePrefix = (('date' in opts) ? opts.date : options.datePrefix);
+  processors = opts.processors;
 };
 
 // this is for compatibility with initial way to set output coloring
