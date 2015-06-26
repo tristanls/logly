@@ -1,7 +1,7 @@
 {
   "name": "logly",
   "description": "A minimal logging utility to support verbose and debug modes",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "author": "Tristan Slominski <tristan.slominski@gmail.com> (http://github.com/tristanls)",
   "contributors": [
     "Andrew Smith (http://github.com/andrew-smith)",
