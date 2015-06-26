@@ -98,7 +98,7 @@ processors.push( function( input ) {
 });
 logly.options( { processors: processors } );
 logly.log( 'some\nnewlines\nhere\nand\nthere');
-//
+// stdout: logly: some newlines here and there
 ```
 
 ### `options` object
